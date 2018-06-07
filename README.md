@@ -95,7 +95,7 @@ I wrote `mtcnn_webcam.cpp` for testing MTCNN in webcam mode. To run in webcam mo
 	|4.jpg|474x316|73.42ms|
 	|6.jpg|640x480|100.276ms|
 
-![Alt text](example/mtcnn/result_1.jpg)
+![Alt text](examples/mtcnn/result_1.jpg)
 
 ### 2. Test ResNet50 Tengine implementation
 
