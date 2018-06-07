@@ -64,7 +64,7 @@ int main(int argc,char** argv)
     mtcnn det(min_size,conf_p,conf_r,conf_o,nms_p,nms_r,nms_o);
     det.load_3model(model_dir);
 
-    struct timeval t0, t1;
+    /*struct timeval t0, t1;
     for(int i=0;i<1;i++)
     {
       gettimeofday(&t0, NULL);
@@ -73,23 +73,23 @@ int main(int argc,char** argv)
       gettimeofday(&t1, NULL);
       float mytime=(float)((t1.tv_sec * 1000000 + t1.tv_usec) - (t0.tv_sec * 1000000 + t0.tv_usec)) / 1000;
       std::cout<<"i ="<<i<<" time is "<<mytime<<"\n";
-    }
+    }*/
  
-    // struct timeval t0, t1;
-    //std::vector<face_box> face_info1;
-    // int  repeat=30;
-    // float avg_time=0.f;
-    // for(int i=0;i<repeat+1;i++)
-    // {
-    //   gettimeofday(&t0, NULL);
-    //   det.detect(image,face_info1);
-    //   gettimeofday(&t1, NULL);
-    //   float mytime=(float)((t1.tv_sec * 1000000 + t1.tv_usec) - (t0.tv_sec * 1000000 + t0.tv_usec)) / 1000;
-    //   std::cout<<"i ="<<i<<" time is "<<mytime<<"\n";
-    //   if(i>0) avg_time+=mytime;
-    // }
-    // std::cout<<"repeat "<<repeat<<", avg time is "<<avg_time/repeat<<" \n ";
-    //det.detect(image,face_info);
+     struct timeval t0, t1;
+    std::vector<face_box> face_info1;
+     int  repeat=30;
+     float avg_time=0.f;
+     for(int i=0;i<repeat+1;i++)
+     {
+       gettimeofday(&t0, NULL);
+       det.detect(image,face_info1);
+       gettimeofday(&t1, NULL);
+       float mytime=(float)((t1.tv_sec * 1000000 + t1.tv_usec) - (t0.tv_sec * 1000000 + t0.tv_usec)) / 1000;
+       std::cout<<"i ="<<i<<" time is "<<mytime<<"\n";
+       if(i>0) avg_time+=mytime;
+     }
+     std::cout<<"repeat "<<repeat<<", avg time is "<<avg_time/repeat<<" \n ";
+    det.detect(image,face_info);
 
     int num_faces=face_info.size();
     std::cout<<"detected "<<num_faces<<" faces\n";
@@ -105,6 +105,8 @@ int main(int argc,char** argv)
 		}
     }
 
+    cv::imshow("image", image);		
     cv::imwrite(sv_name,image);
+    cv::waitKey();
     return  0;
 }
