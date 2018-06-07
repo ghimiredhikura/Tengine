@@ -48,11 +48,9 @@ Please refer to [http://caffe.berkeleyvision.org/installation.html](http://caffe
 
 ### Build
 
-	```
 	cd ~/tengine
 	make
 	make test (Optional)
-	```
 
 # Test
 
@@ -60,30 +58,24 @@ Please refer to [http://caffe.berkeleyvision.org/installation.html](http://caffe
 
 * Single image
 
-	```
 	cd ~/tengine/examples/mtcnn
 	cmake .
 	make
-	```
 
 We need caffe model files of MTCNN, they can be downloaded from [MTCNN page](https://github.com/kpzhang93/MTCNN_face_detection_alignment/tree/master/code/codes/MTCNNv1/model).
 Tengine MTCNN supoprts new version of caffe model, old version to new version can be converted using [caffe tools](https://github.com/weiliu89/caffe/tree/ssd/tools) 
 Already converted model files are kept in the `Tengine/examples/mtcnn/model/` dir. 
 
-	```
+	
 	[usage]: ./MTCNN  <test.jpg>  <model_dir>  [save_result.jpg]
-	```
+	
 
 * Webcam
 
 I wrote `mtcnn_webcam.cpp` for testing MTCNN in webcam mode. To run in webcam mode, replace `test_mtcnn.cpp` in `Tengine/example/mtcnn/CMakeLists.txt` with `mtcnn_webcam.cpp` and compile using cmake. 
 
-	```
 	cd ~/tengine/examples/mtcnn
 	cmake .
 	make
-	```
 
-	```
 	[usage]: ./MTCNN  <webcam_id>  <model_dir>
-	```
