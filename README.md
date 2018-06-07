@@ -8,7 +8,7 @@
 
 # Install/Compile Ubuntu16.04
 
-### Download source code
+### 1. Download source code
 
 ```
 git clone https://github.com/ghimiredhikura/Tengine.git
@@ -26,7 +26,7 @@ Install dependency libraries if you have not installed in your machine
 * Caffe:
 Please refer to [http://caffe.berkeleyvision.org/installation.html](http://caffe.berkeleyvision.org/installation.html)
 
-### Prepare config files
+### 2. Prepare config files
 * copy config example file
 
 	```
@@ -46,36 +46,69 @@ Please refer to [http://caffe.berkeleyvision.org/installation.html](http://caffe
 * edit `etc/config`
 	- Default setting is used as it is, you can change it to match your machine		   	
 
-### Build
-
+### 3. Build
+```
 	cd ~/tengine
 	make
 	make test (Optional)
+```
 
 # Test
 
-### Test MTCNN Tengine implementation
+### 1. Test MTCNN Tengine implementation
 
 * Single image
 
+```
 	cd ~/tengine/examples/mtcnn
 	cmake .
 	make
+```
 
 We need caffe model files of MTCNN, they can be downloaded from [MTCNN page](https://github.com/kpzhang93/MTCNN_face_detection_alignment/tree/master/code/codes/MTCNNv1/model).
 Tengine MTCNN supoprts new version of caffe model, old version to new version can be converted using [caffe tools](https://github.com/weiliu89/caffe/tree/ssd/tools) 
 Already converted model files are kept in the `Tengine/examples/mtcnn/model/` dir. 
 
-	
+```	
 	[usage]: ./MTCNN  <test.jpg>  <model_dir>  [save_result.jpg]
-	
+```	
 
 * Webcam
 
 I wrote `mtcnn_webcam.cpp` for testing MTCNN in webcam mode. To run in webcam mode, replace `test_mtcnn.cpp` in `Tengine/example/mtcnn/CMakeLists.txt` with `mtcnn_webcam.cpp` and compile using cmake. 
 
+```
 	cd ~/tengine/examples/mtcnn
 	cmake .
 	make
 
 	[usage]: ./MTCNN  <webcam_id>  <model_dir>
+```
+
+* Benchmark 
+- test on RK3399 single core A72@3.70GHz 
+- run one time for warm-up, repeat 30 runs and take the average time.
+- detect parameters: use default values in [Detect Parameters](#detect-parameters)
+
+|image|img_size|Tengine|
+|-----|--------|-------|
+|4.jpg|474x316|87.2ms|
+|6.jpg|640x480|120.5ms|
+
+
+### 2. Test ResNet50 Tengine implementation
+
+* cmake & make
+```
+	cd ~/tengine/examples/resnet50
+	cp etc/config.example etc/config	
+	cmake .
+	make	
+```
+
+* test an image
+```
+	[usage]: ./RESNET <test.jpg>  <model_dir>
+```	
+
+* model_dir is the path of your resnet50 models.  
