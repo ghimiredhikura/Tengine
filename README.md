@@ -4,9 +4,9 @@
 
 **Tengine**, developed by **OPEN** AI LAB, is a lite, high-performance, and modular inference engine for embedded device.
 
-[mode detail about tengine, official page](https://github.com/OAID/Tengine/blob/master/README.md)
+For more detail about tengine, please refer to [official page](https://github.com/OAID/Tengine/blob/master/README.md)
 
-# Install/Compile Ubuntu16.04
+# Install/Compile in Ubuntu 16.04
 
 ### 1. Download source code
 
