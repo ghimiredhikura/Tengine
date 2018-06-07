@@ -4,81 +4,86 @@
 
 **Tengine**, developed by **OPEN** AI LAB, is a lite, high-performance, and modular inference engine for embedded device.
 
-Tengine is composed of six modules: **core/operator/serializer/executor/driver/wrapper**.
+[mode detail about tengine, official page](https://github.com/OAID/Tengine/blob/master/README.md)
 
-- [**core**](core)  provides the basic components and functionalities of the system.
-- [**operator**](operator)  defines the schema of operators, such as convolution, relu, pooling, etc. al. Here is the current support [operator list](doc/operator_ir.md). 
-- [**serializer**](serializer)  is to load the saved model. The serializer framework is extensible to support different format, including the customized one. Current version can support caffe and MXNet models. Tensorflow support will be the next.
-- [**executor**](executor)  implements the code to run graph and operators. Current version provides a highly optimized implementation for multi A72 cores.
-- [**driver**](driver)  is the adapter of real H/W and provides service to device executor by HAL API. It is possible for single driver to create multiple devices.
-- [**wrapper**](wrapper)  provides the wrapper of APIs for different frameworks. Current version only supports caffe API wrapper. Tensorflow API support will be the next.
+# Install/Compile Ubuntu16.04
 
+### Download source code
 
-This version can load and run caffe/MXNet model of **mobilenet** and **squeezenet** directly.  For more details, please goto [**install**](doc/install.md).
+```
+git clone https://github.com/ghimiredhikura/Tengine.git
+```
 
-`NOTE`: Old caffe model has to be upgraded using **upgrade_net_proto_binary/upgrade_net_proto_binary** from caffe's package.
+Install dependency libraries if you have not installed in your machine
 
-## Performance
+* OpenCV and Protobuff:
 
-The data is collected on **1.8G A72** and on chip RK3399, by repeating calling the forward interface to get the average time cost (ms) per run.
+	```
+	sudo apt install libprotobuf-dev
+	sudo apt install libopencv-dev
+	```
 
-- Single A72 core (1xA72)
+* Caffe:
+Please refer to [http://caffe.berkeleyvision.org/installation.html](http://caffe.berkeleyvision.org/installation.html)
 
-|NN  |Caffe(Openblas)|Tengine|
-|----|---------------|-------|
-|squeezenet|147|91|
-|mobilenet|306|122|
+### Prepare config files
+* copy config example file
 
-- Two A72 cores (2xA72)
+	```
+	cp makefile.config.example makefile.config
+	cp etc/config.example etc/config
+	```
 
-|NN  |Caffe(Openblas)|Tengine|
-|----|---------------|-------|
-|squeezenet|102|55|
-|mobilenet|232|77|
+* edit `makefile.config`
+	- By default, `CONFIG_ARCH_ARM64` option is valid. But I set it to `CONFIG_ARCH_AMD64` to match my ubuntu machine
+	- Caffe option is also enabled, you have to set caffe path. 
+	  
+	  ```
+	  CONFIG_CAFFE_REF=y
+	  CAFFE_ROOT = /home/deep/Desktop/SFD_ROOT/caffe
+	  ```
 
+* edit `etc/config`
+	- Default setting is used as it is, you can change it to match your machine		   	
 
-For details to run benchmark, please visit [**benchmark**](doc/benchmark.md) page.
+### Build
 
-## Build and Install
-please refer to the [install](doc/install.md) page.
+	```
+	cd ~/tengine
+	make
+	make test (Optional)
+	```
 
+# Test
 
-## Develop New Operator
+### Test MTCNN Tengine implementation
 
-It is easy to add new operator to Tengine. Here is the guide on [new operator](doc/operator_dev.md).
+* Single image
 
-## Support New Model Format
+	```
+	cd ~/tengine/examples/mtcnn
+	cmake .
+	make
+	```
 
-Tengine can be extended to support new serialization format, by building new serializer module. 
+We need caffe model files of MTCNN, they can be downloaded from [MTCNN page](https://github.com/kpzhang93/MTCNN_face_detection_alignment/tree/master/code/codes/MTCNNv1/model).
+Tengine MTCNN supoprts new version of caffe model, old version to new version can be converted using [caffe tools](https://github.com/weiliu89/caffe/tree/ssd/tools) 
+Already converted model files are kept in the `Tengine/examples/mtcnn/model/` dir. 
 
-[How to build new serializer module](doc/serializer_dev.md)
+	```
+	[usage]: ./MTCNN  <test.jpg>  <model_dir>  [save_result.jpg]
+	```
 
-## Release History
+* Webcam
 
-### version 0.3.0 - 2018/2/6
+I wrote `mtcnn_webcam.cpp` for testing MTCNN in webcam mode. To run in webcam mode, replace `test_mtcnn.cpp` in `Tengine/example/mtcnn/CMakeLists.txt` with `mtcnn_webcam.cpp` and compile using cmake. 
 
-Introduce the driver/device model to support MT(Multi-Thread)
+	```
+	cd ~/tengine/examples/mtcnn
+	cmake .
+	make
+	```
 
-Support new NN: Inception-v4
-
-Caffe Wrapper examples: squeezenet/mobilenet/mtcnn
-
-MXNet model load examples: squeezenet/mobilenet
-
-
-### version 0.2.0 - 2018/1/24
-
-Support new operator: Eltwise, PReLU, Slice
-
-Support new NN: mtcnn, resnet and lighten_cnn 
-
-Experimental caffe API wrapper: caffe based application just needs to recompile to use Tengine
-
-
-### version 0.1.2 - 2017/12/30
-
-Update documents, as well a few fixes.
-
-### version 0.1.0 - 2017/12/29
-
-Initial release of single A72 support
+	```
+	[usage]: ./MTCNN  <webcam_id>  <model_dir>
+	```
