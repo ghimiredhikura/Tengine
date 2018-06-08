@@ -56,9 +56,9 @@ Please refer to [http://caffe.berkeleyvision.org/installation.html](http://caffe
 # Tengine Performance
 
 Test Environment
-	CPU : Rockchip RK3399.
-		Single-core Cortex-A72 up to 3.70GHz
-	Operating System : Ubuntu 16.04
+	- CPU : Rockchip RK3399.
+		- Single-core Cortex-A72 up to 3.70GHz
+	- Operating System : Ubuntu 16.04
 
 * SqueezeNet
 ```
