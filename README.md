@@ -53,6 +53,31 @@ Please refer to [http://caffe.berkeleyvision.org/installation.html](http://caffe
 	make test (Optional)
 	```
 
+# Tengine Performance
+
+Test Environment
+	CPU : Rockchip RK3399.
+		Single-core Cortex-A72 up to 3.70GHz
+	Operating System : Ubuntu 16.04
+
+* SqueezeNet
+```
+cd ~/tengine
+./build/tests/bin/bench_sqz
+```
+
+* MobileNet
+```
+cd ~/tengine
+./build/tests/bin/bench_mobilenet
+```
+ 
+|    Model    | Total Time (ms) |
+| ----------- | -----------|
+| SqueezeNet |  40.92686 |
+| MobileNet |  104.32197 |
+
+
 # Test
 
 ### 1. Test MTCNN Tengine implementation
